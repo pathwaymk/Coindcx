@@ -23,9 +23,11 @@ def get_details():
     margin = v.get()
     base_coin = base_coin_entry.get()
 
+    # Checking weather the user enter the valid crypto coin
     if coin not in coin_name and coin.upper() not in coin_short_name:
         messagebox.showwarning("Crypto name", "No crypto find, Try again")
         return None
+    # Checking weather all the entry in the app(form) is filled
     elif float(alert_price) < 0:
         messagebox.showwarning("Negative price", "Please enter price above zero")
         return None
@@ -35,14 +37,17 @@ def get_details():
     elif not base_coin:
         messagebox.showwarning("Base coin", "Please enter a valid base coin")
         return None
+    # Removing all the entry in the form
     coin_name_entry.delete(0, END)
     base_coin_entry.delete(0, END)
     price_entry.delete(0, END)
     coin_name_entry.focus_set()
+    # Passing the data to get_coin_pair and then add to the watch list
     get_coin_pair([coin, alert_price, margin, base_coin])
-    messagebox.showinfo(title="Sucess", message=f"{coin} is added to the watch list")
+    messagebox.showinfo(title="Success", message=f"{coin} is added to the watch list")
 
 
+# Creating UI for the app
 window = Tk()
 window.title("Crypto Reminder")
 window.config(width=400, height=400, bg="#000000")
