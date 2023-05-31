@@ -39,10 +39,11 @@ def get_details():
         return None
     # Removing all the entry in the form
     coin_name_entry.delete(0, END)
-    base_coin_entry.delete(0, END)
+    # base_coin_entry.delete(0, END)
     price_entry.delete(0, END)
     coin_name_entry.focus_set()
     # Passing the data to get_coin_pair and then add to the watch list
+    # get_crypto_data()
     get_coin_pair([coin, alert_price, margin, base_coin])
     messagebox.showinfo(title="Success", message=f"{coin} is added to the watch list")
 
