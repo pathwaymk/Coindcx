@@ -10,9 +10,11 @@ PRICE_URL = "https://public.coindcx.com/market_data/trade_history"
 # Get all crypto currencies details from coindcx api
 def get_crypto_data():
     name_url = NAME_URL
+    # print("got the response")
     response = requests.get(name_url)
     # Getting data as json
     datum = response.json()
+    # print("got the response")
 
     for data in datum:
         new_data = {datum.index(data): {key: data[key] for key in data}}
@@ -41,7 +43,7 @@ def get_coin_pair(coin_list):
                 # crypto of same name but with different base coin
                 if datum[key]["base_currency_short_name"] == base_coin:
                     # target_currency_name is full name of the crypto (Ripple) target_currency_short_name(XRP)
-                    if datum[key]["target_currency_name"] == coin_name or datum[key]["target_currency_short_name"] == coin_name:
+                    if datum[key]["target_currency_name"] == coin_name or datum[key]["target_currency_short_name"] == coin_name.upper():
                         add_to_watchlist([datum[key]["pair"], coin_name, alert_price, margin])
 
     except FileNotFoundError:
