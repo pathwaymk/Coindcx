@@ -2,11 +2,8 @@ import time
 
 from main import *
 
-my_email = "Your Email"
-password = "Password"
-
 SID = "Your SID"
-SECRET_KEY_Twilio = "Secret key"
+SECRET_KEY_Twilio = "Your Auth key"
 
 
 # Getting the price of the particular crypto with its coin_pair
@@ -26,6 +23,7 @@ def alert_user(messages):
     if messages:
         msg = ""
         delete_list = []
+        print("creating alert")
         # Creating a message that contains the name of the coin and price of the coin
         for message in messages:
             # message[0] is the name of the coin, message[1] is the current price of the coin
@@ -42,15 +40,14 @@ def alert_user(messages):
                     name = line.split("||")[0]
                     if name not in delete_list:
                         file3.write(line)
-        with SMTP("smtp.gmail.com", 587) as mail_bot:
-            mail_bot.starttls()
-            mail_bot.login(user=my_email, password=password)
-            mail_bot.sendmail(from_addr=my_email,
-                              to_addrs="Target mail",
-                              msg=f"SUBJECT: Price Alert \n\n{msg}")
 
         client = Client(SID, SECRET_KEY_Twilio)
-        client.calls.create(to="Target number", from_="Your number", url="http://demo.twilio.com/docs/voice.xml")
+        message = client.messages.create(
+            from_='Twillo number ',
+            body=msg,
+            to='receiver number'
+        )
+        client.calls.create(to="+919360562973", from_="+13204463938", url="http://demo.twilio.com/docs/voice.xml")
 
 
 # Checking the prices of the cryptos in watch list
@@ -58,6 +55,7 @@ def price_message():
     coins = []
     with open("watch_list.txt") as file:
         coin_list = file.readlines()
+        print(coin_list)
         for coin in coin_list:
             coin_name, pair, alert_price, margin = coin.split("||")
             # getting current price of a crypto
@@ -75,5 +73,5 @@ def price_message():
 
 while True:
     # Looping it every 120 secs
-    time.sleep(120)
     alert_user(price_message())
+    time.sleep(120)
